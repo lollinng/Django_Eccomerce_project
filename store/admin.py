@@ -10,8 +10,6 @@ class CategoryAdmin(admin.ModelAdmin):
     # here slug which is url_name for category is created randomly from the name
     prepopulated_fields = {'slug':('name',)}
 
-
-
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['title','author','slug','price','in_stock','created','updated']
