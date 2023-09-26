@@ -1,6 +1,15 @@
 from decimal import Decimal
 from store.models import Product
 
+"""
+Basket Dictionary
+
+{
+
+}
+
+"""
+
 
 class Basket():
     """
@@ -22,7 +31,7 @@ class Basket():
         """
         Adding and updating the users basket session data
         """
-        product_id = product.id
+        product_id = str(product.id)
         
         # if product doesn't exist add the product price
         if product_id not in self.basket:
@@ -30,9 +39,13 @@ class Basket():
                 'price' : str(product.price),
                 'qty': int(qty)
             }
+        else:
+            self.basket[product_id] = {
+                'qty': int(qty)
+            }
 
         
-        # expilictly tell django to update the session
+        # explicitly tell django to update the session
         self.save()
 
     def delete(self,product):
@@ -42,7 +55,19 @@ class Basket():
         product_id = str(product)
         if product_id in self.basket:
             del  self.basket[product_id]
+            print(product_id)
             self.save()
+
+    def update(self,product,qty):
+        """
+        update values in session data
+        """
+        product_id = str(product)
+
+        if product_id in self.basket:
+            self.basket[product_id]['qty'] = qty
+            self.save()
+        print(self.basket)
 
     def save(self):
         self.session.modified = True
@@ -85,3 +110,7 @@ class Basket():
             Decimal(item['price']) * item['qty'] for item in self.basket.values()
         )
     
+    def get_prod_price(self,product):
+        product_id = str(product)
+        return  Decimal(self.basket[product_id]['price']) * self.basket[product_id]['qty']
+# 

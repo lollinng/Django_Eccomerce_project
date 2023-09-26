@@ -22,12 +22,13 @@
                 <div class="border">
                     <div class="col border-bottom">
                         <div class="row p-3">
-                            <div class="col-6">Hardback Book</div>
-                            <div class="col-6 text-end"><span class="h6 fw-bold">${{ item.total_price }}</span></div>
+                            <div class="col-4">Hardback Book</div>
+                            <div class="col-4 "><span class="h6 fw-bold">${{ product.price }}</span></div>
+                            <div data-index="{{product.id}}" id='price' class="col-4 text item-price">${{ item.total_price }}</div>
                         </div>
                     </div>
                     <div class="col">
-                        <div class="row p-3">
+                        <div class="row  p-3">
                             <div class="col-12">
                                 <label for="select">Qty</label>
                                 <select id="select{{product.id}}">
@@ -69,8 +70,7 @@
 <script>
     $(document).on('click','.delete-button',function(e){
         e.preventDefault();
-        {% comment %} 
-        {% comment %} to remove the product index from page using js {% endcomment %} 
+        // to remove the product index from page using js  
         var prodid = $(this).data('index');
 
         $.ajax({
@@ -84,13 +84,36 @@
             success:function(json){
                 console.log(prodid)
                 $('.product-item[data-index="'+prodid+'"]').remove();
-
+                document.getElementById("subtotal").innerHTML = json.subtotal;
+                document.getElementById("basket-qty").innerHTML = json.qty
             },
             error:function(xhr,errmsg,err){
 
             }
+        });
+    })
+
+    $(document).on('click','.update-button',function(e){
+        e.preventDefault();
+        var prodid = $(this).data('index');
+        $.ajax({
+            type:"POST",
+            url: '{% url "basket:basket_update" %}',
+            data:{
+                productid:$(this).data('index'),
+                productqty: $('#select' + prodid + ' option:selected').text(),
+                csrfmiddlewaretoken: "{{csrf_token}}",
+                action: 'post'
+            },
+            success: function(json){
+                document.getElementById("subtotal").innerHTML = json.subtotal;
+                $('#price[data-index="'+prodid+'"]').text("$" + json.prod_total)  
+                document.getElementById("basket-qty").innerHTML = json.qty
+            }
         })
     })
+
+
 </script>
 
 {% endblock %}

@@ -40,7 +40,7 @@
                 </div>
                 <a type="button" role="button" href="{% url "basket:basket_summary" %}"class="btn btn-outline-secondary">
                     {% comment %} <div id="basket-qty" class="d-inline-flex">1</div> {% endcomment %}
-                    
+                    {% comment %} targetting basket __len__ function to get no. of basket elements {% endcomment %}
                     {% with total_qty=basket|length %}
                         <div id='basket-qty' class='d-inline-flex'>
                             {% if total_qty > 0 %}
