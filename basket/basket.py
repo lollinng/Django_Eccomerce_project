@@ -40,10 +40,7 @@ class Basket():
                 'qty': int(qty)
             }
         else:
-            self.basket[product_id] = {
-                'qty': int(qty)
-            }
-
+            self.basket[product_id]['qty']= int(qty)
         
         # explicitly tell django to update the session
         self.save()
@@ -55,7 +52,6 @@ class Basket():
         product_id = str(product)
         if product_id in self.basket:
             del  self.basket[product_id]
-            print(product_id)
             self.save()
 
     def update(self,product,qty):
@@ -67,7 +63,6 @@ class Basket():
         if product_id in self.basket:
             self.basket[product_id]['qty'] = qty
             self.save()
-        print(self.basket)
 
     def save(self):
         self.session.modified = True
@@ -105,7 +100,7 @@ class Basket():
             # yield returns a generated object instead of returning a simple value 
             yield item
     
-    def get_total_price(self):
+    def get_subtotal_price(self):
         return sum(
             Decimal(item['price']) * item['qty'] for item in self.basket.values()
         )
@@ -113,4 +108,16 @@ class Basket():
     def get_prod_price(self,product):
         product_id = str(product)
         return  Decimal(self.basket[product_id]['price']) * self.basket[product_id]['qty']
+    
+    def get_total_price(self):
+        subtotal = sum(Decimal(item['price']) * item['qty'] for item in self.basket.values())
+
+        if subtotal == 0:
+            shipping = Decimal(0.00)
+        else:
+            shipping = Decimal(11.50)
+
+        total = subtotal + Decimal(shipping)
+        return total
+
 # 

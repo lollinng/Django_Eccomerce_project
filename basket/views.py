@@ -9,7 +9,7 @@ from .basket import Basket
 # render cart/basket page
 def basket_summary(request):
     basket = Basket(request)
-    return render(request,'store/basket/summary.html',{'basket':basket})
+    return render(request,'basket/summary.html',{'basket':basket})
 
 
 def basket_add(request):
@@ -34,21 +34,26 @@ def basket_delete(request):
         basket.delete(product=product_id)
 
         basketqty = basket.__len__()
+        basketsubtotal = basket.get_subtotal_price()
         baskettotal = basket.get_total_price()
-        response = JsonResponse({'qty': basketqty, 'subtotal': baskettotal})
+        response = JsonResponse({'qty': basketqty,'subtotal': basketsubtotal,'total':baskettotal})
         return response
     
 def basket_update(request):
     basket = Basket(request)
-    print('hi')
     if request.POST.get('action') == 'post':
         product_id = int(request.POST.get('productid'))
         product_qty = int(request.POST.get('productqty'))
-        print(product_id,product_qty)
         basket.update(product=product_id,qty=product_qty)
 
         prod_total = str(basket.get_prod_price(product=product_id))
         basketqty = basket.__len__()
         baskettotal = basket.get_total_price() 
-        response = JsonResponse({'qty': basketqty, 'subtotal': baskettotal,'prod_total':prod_total})
+        basketsubtotal = basket.get_subtotal_price()
+        response = JsonResponse({'qty': basketqty, 'subtotal': basketsubtotal,'total':baskettotal,'prod_total':prod_total})
         return response
+    
+
+
+
+       
