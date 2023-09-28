@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.query import QuerySet
@@ -33,7 +34,9 @@ class Category(models.Model):
 class Product(models.Model):
     category = models.ForeignKey(Category,related_name='product',on_delete=models.CASCADE)
     # Here User is an built in django model used for authentication
-    created_by = models.ForeignKey(User,on_delete=models.CASCADE,related_name='product_created')
+    # created_by = models.ForeignKey(User,on_delete=models.CASCADE,related_name='product_created')
+    # We created our custom User model , hence we are calling it here
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,related_name='product_created')
     title = models.CharField(max_length=255)
     author = models.CharField(max_length=255,default='admin')
     description = models.TextField(blank=True)
