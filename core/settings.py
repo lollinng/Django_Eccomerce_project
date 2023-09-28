@@ -136,6 +136,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media/')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # telling django to use custom user model
+ACCOUNT_USER_MODEL_USERNAME_FIELD = 'username'
 AUTH_USER_MODEL = 'account.UserBase'
 LOGIN_REDIRECT_URL = '/account/dashboard'
 LOGIN_URL = '/account/login'
+
+# to get email body in our console instead of someones mail box for debug
+# Email setting
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
