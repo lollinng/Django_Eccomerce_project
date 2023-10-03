@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 
 
 from .models import UserBase
-from .forms import RegistrationForm
+from .forms import RegistrationForm, UserEditForm
 from .token import account_activation_token
 
 # Create your views here.
@@ -17,6 +17,30 @@ from .token import account_activation_token
 @login_required
 def dashboard(request):
     return render(request,'account/user/dashboard.html')
+
+@login_required
+def edit_details(request):
+    if request.method == 'POST':
+        user_form = UserEditForm(instance=request.user,data=request.POST)
+        if user_form.is_valid():
+            user_form.save()
+    else:
+        user_form = UserEditForm(instance=request.user)
+        
+    return render(
+        request,
+        'account/user/edit_details.html',
+        {'user_form':user_form}
+        )
+
+ # not actually deleting but temporarily deleting and flagging the user to prevent them from logging in
+@login_required
+def delete_user(request):
+    user = UserBase.objects.get(user_name=request.user)
+    user.is_active = False 
+    user.save()
+    logout(request=request)
+    return redirect('account:delete_confirmation')
 
 def account_register(request):
 
@@ -30,7 +54,7 @@ def account_register(request):
             user = registrationForm.save(commit=False)
             # cleaned_data to save from injecting some sql code
             user.email = registrationForm.cleaned_data['email']
-            user.set_password = registrationForm.cleaned_data['password']
+            user.set_password(registrationForm.cleaned_data['password'])
             user.is_active = False # we want to activate after he accepts the email
             user.save()
 

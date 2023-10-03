@@ -68,3 +68,24 @@ class UserLoginForm(AuthenticationForm):
             }
         )
     )
+
+
+class UserEditForm(forms.ModelForm):
+    
+    # read-only for email
+    email = forms.EmailField(
+        label='Account email (can not be changed)', max_length=200, widget=forms.TextInput(
+            attrs={'class': 'form-control mb-3', 'placeholder': 'email', 'id': 'form-email', 'readonly': 'readonly'}))
+
+    first_name = forms.CharField(
+        label='Username', min_length=4, max_length=50, widget=forms.TextInput(
+            attrs={'class': 'form-control mb-3', 'placeholder': 'Firstname', 'id': 'form-lastname'}))
+    
+    class Meta:
+        model = UserBase
+        fields = ('email','first_name')
+
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+        self.fields['first_name'].required = True
+        self.fields['email'].required = True
