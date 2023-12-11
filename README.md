@@ -27,13 +27,18 @@ To explore and run this project locally, follow the steps below:
   ```
 3. Intgrate django data models to databasae
   ```bash
-  python manage.py makemigrations core
+  python manage.py makemigrations
   python manage.py migrate
   ```
 4. Run application
   ```bash
   python manage.py runserver.
   ```
+5. Add an admin user for managing the site and listing/updating the products
+  ```bash
+  python manage.py createsuperuser
+  ```
+
 
 ## Disclaimer
 This project is purely a demonstration of skills and is not intended for production use. Any code snippets or functionalities should be adapted and validated according to best practices before implementation in a live environment.
