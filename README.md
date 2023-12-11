@@ -19,7 +19,7 @@ To explore and run this project locally, follow the steps below:
 
 1. Clone the repository:
   ```bash
-  git clone https://github.com/lollinng/Eccomerce.git
+  git clone https://github.com/lollinng/Django_Eccomerce_project.git
   ```
 2. Install Dependencies using virutal env
   ```bash
