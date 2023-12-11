@@ -14,6 +14,9 @@ purposes only and is not meant for commercial use. It serves as a comprehensive 
 * Ajax for Updating States in Django
 * Django Template for UI
 
+## Video of the project
+[![Watch the video](https://github.com/lollinng/Django_Eccomerce_project/assets/55660103/55bd62ce-67fd-4043-bd08-07b38276472d)](https://www.youtube.com/watch?v=Fe9ZR5nI-0c&t=26s)
+
 ## Getting Started
 To explore and run this project locally, follow the steps below:
 
