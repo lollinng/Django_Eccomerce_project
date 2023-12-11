@@ -21,8 +21,10 @@ To explore and run this project locally, follow the steps below:
   ```bash
   git clone https://github.com/lollinng/Eccomerce.git
   ```
-2. Install Dependencies
+2. Install Dependencies using virutal env
   ```bash
+  python -m venv env
+  env\Scripts\activate.bat
   pip install -r requirements.txt
   ```
 3. Intgrate django data models to databasae
